@@ -77,7 +77,7 @@ type AllBatchesDetails struct{
 // ============================================================================================================================
 // Init 
 // ============================================================================================================================
-func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	var err error
 	
@@ -94,7 +94,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 // ============================================================================================================================
 // Run - Our entry point for Invocations - [LEGACY] obc-peer 4/25/2016
 // ============================================================================================================================
-func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("run is running " + function)
 	return t.Invoke(stub, function, args)
 }
@@ -104,7 +104,7 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 // ============================================================================================================================
 // Run - Our entry point
 // ============================================================================================================================
-func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("Run is running " + function)
 
 	// Handle different functions
@@ -129,7 +129,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 // ============================================================================================================================
 // Query - read a variable from chaincode state - (aka read)
 // ============================================================================================================================
-func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	if len(args) != 1 { return nil, errors.New("Incorrect number of arguments passed") }
 
@@ -149,7 +149,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 // ============================================================================================================================
 // Get Batch Details
 // ============================================================================================================================
-func (t *SimpleChaincode) getBatch(stub *shim.ChaincodeStub, batchId string)([]byte, error){
+func (t *SimpleChaincode) getBatch(stub shim.ChaincodeStubInterface, batchId string)([]byte, error){
 	
 	fmt.Println("Start find Batch")
 	fmt.Println("Looking for Batch #" + batchId);
@@ -168,7 +168,7 @@ func (t *SimpleChaincode) getBatch(stub *shim.ChaincodeStub, batchId string)([]b
 // ============================================================================================================================
 // Get All Batches 
 // ============================================================================================================================
-func (t *SimpleChaincode) getAllBatches(stub *shim.ChaincodeStub, user string)([]byte, error){
+func (t *SimpleChaincode) getAllBatches(stub shim.ChaincodeStubInterface, user string)([]byte, error){
 	
 	fmt.Println("Start find getAllBatches ")
 	fmt.Println("Looking for All Batches " + user);
@@ -212,7 +212,7 @@ func (t *SimpleChaincode) getAllBatches(stub *shim.ChaincodeStub, user string)([
 // ============================================================================================================================
 // Get All Batches Details for a specific user
 // ============================================================================================================================
-func (t *SimpleChaincode) getAllBatchesDetails(stub *shim.ChaincodeStub, user string)([]byte, error){
+func (t *SimpleChaincode) getAllBatchesDetails(stub shim.ChaincodeStubInterface, user string)([]byte, error){
 	
 	fmt.Println("Start find getAllBatchesDetails ")
 	fmt.Println("Looking for All Batches Details " + user);
@@ -257,7 +257,7 @@ func (t *SimpleChaincode) getAllBatchesDetails(stub *shim.ChaincodeStub, user st
 // ============================================================================================================================
 // Get Total Number of Items 
 // ============================================================================================================================
-func (t *SimpleChaincode) getNbItems(stub *shim.ChaincodeStub, user string)([]byte, error){
+func (t *SimpleChaincode) getNbItems(stub shim.ChaincodeStubInterface, user string)([]byte, error){
 	
 	fmt.Println("Start find getTotNbItems ")
 	fmt.Println("Looking for Total Number of Items " + user);
@@ -316,7 +316,7 @@ func (t *SimpleChaincode) getNbItems(stub *shim.ChaincodeStub, user string)([]by
 // 	TType 		string   `json:"ttype"`
 // }
 // ============================================================================================================================
-func (t *SimpleChaincode) createBatch(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) createBatch(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	var err error
 	fmt.Println("Running createBatch")
@@ -387,7 +387,7 @@ func (t *SimpleChaincode) createBatch(stub *shim.ChaincodeStub, args []string) (
 // ============================================================================================================================
 // Claim a batch - can only be done by shipping company
 // ============================================================================================================================
-func (t *SimpleChaincode) claimBatch(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) claimBatch(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	var err error
 	fmt.Println("Running claimBatch")
@@ -437,7 +437,7 @@ func (t *SimpleChaincode) claimBatch(stub *shim.ChaincodeStub, args []string) ([
 // ============================================================================================================================
 // Transfer a batch - can only be done by shipping company
 // ============================================================================================================================
-func (t *SimpleChaincode) transferBatch(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) transferBatch(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	var err error
 	fmt.Println("Running transferBatch")
@@ -489,7 +489,7 @@ func (t *SimpleChaincode) transferBatch(stub *shim.ChaincodeStub, args []string)
 // ============================================================================================================================
 // Sell batch item - can only be done by retailer (it changes the quantity in the batch object)
 // ============================================================================================================================
-func (t *SimpleChaincode) sellBatchItem(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) sellBatchItem(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	var err error
 	fmt.Println("Running sellBatchItem")
@@ -549,7 +549,7 @@ func (t *SimpleChaincode) sellBatchItem(stub *shim.ChaincodeStub, args []string)
 // ============================================================================================================================
 // Update batch quality - this is done through the shipping company via IOT (if the temperature of food truck is above a certain value it will call this method)
 // ============================================================================================================================
-func (t *SimpleChaincode) updateBatchQuality(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) updateBatchQuality(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	var err error
 	fmt.Println("Running updateBatchQuality")
